@@ -1,8 +1,9 @@
 import os
 
-# You need to replace the next values with the appropriate values for your configuration
+# You need to replace the next values with the appropriate values for your
+#  configuration
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_ECHO = False
 SQLALCHEMY_TRACK_MODIFICATIONS = True
-SQLALCHEMY_DATABASE_URI = "postgresql://forcewall:Timraik1@localhost/countWindows_app"
+SQLALCHEMY_DATABASE_URI = "postgresql://forcewall:timraik1@localhost/countwindows_app"
