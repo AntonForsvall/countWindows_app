@@ -47,7 +47,7 @@ class Register(Resource):
         db.session.add(user)
         db.session.commit()
 
-        result = User.serialize(user)
+        result = User.serialize(user) 
         return {"status": 'success', 'data': result}, 201
 
     def generate_key(self):
