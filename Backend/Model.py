@@ -10,18 +10,17 @@ db = SQLAlchemy()
 class User(db.Model):
 
     __tablename__ = 'users'
-    id = db.Column(db.String, primary_key=True, unique=True)
-    api_key = db.Column(db.String, unique=True)
+    id = db.Column(db.Integer(), primary_key=True)
+    api_key = db.Column(db.String(), unique=True)
     username = db.Column(db.String(15), nullable=False, unique=True)
-    company = db.Column(db.String, nullable=False)
-    firstname = db.Column(db.String, nullable=False)
-    lastname = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, nullable=False, unique=True)
-    password = db.Column(db.String, nullable=False)
+    company = db.Column(db.String(), nullable=False)
+    firstname = db.Column(db.String(), nullable=False)
+    lastname = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(), nullable=False, unique=True)
+    password = db.Column(db.String(), nullable=False)
 
-    def __init__(self, id, api_key, username, company, firstname, lastname,
+    def __init__(self, api_key, username, company, firstname, lastname,
                  email, password,):
-        self.id = id
         self.api_key = api_key
         self.username = username
         self.company = company
