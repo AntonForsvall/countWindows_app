@@ -2,9 +2,11 @@ from flask import Flask
 from marshmallow import Schema, fields, pre_load, validate
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 ma = Marshmallow()
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 
 class User(db.Model):

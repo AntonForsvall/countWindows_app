@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request
 import random
 import string
-from Model import User, db
+from Model import User, db, bcrypt
 
 
 class Register(Resource):
@@ -22,11 +22,16 @@ class Register(Resource):
         # json_data, errors = User.load(json_data)
         # if errors:
         #     return errors, 422
-        user = User.query.filter_by(username=json_data['username']).first()
-        if user:
+        username = User.query.filter_by(username=json_data['username']).first()
+        if username:
             return {'message': 'Username already exists'}, 400
 
+        email = User.query.filter_by(email=json_data['email']).first()
+        if email:
+            return {'message': 'Emailadress already exists'}, 400
+
         api_key = self.generate_key()
+        hashed_password = bcrypt.generate_password_hash(json_data['password'])
 
         user = User(
             api_key=api_key,
@@ -35,14 +40,14 @@ class Register(Resource):
             username=json_data['username'],
             email=json_data['email'],
             company=json_data['company'],
-            password=json_data['password']
+            password=hashed_password
 
         )
 
         db.session.add(user)
         db.session.commit()
 
-        result = User.dump(user).json_data
+        result = User.serialize(user)
         return {"status": 'success', 'data': result}, 201
 
     def generate_key(self):
