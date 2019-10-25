@@ -31,7 +31,7 @@ class Signin(Resource):
         if not user:
             return {'message': 'Username does not exist'}, 400
 
-        if not json_data.bcrypt.check_password_hash(json_data['password'], user.password):
+        if not bcrypt.check_password_hash(user.password, json_data['password']):
             return {'message': 'Password incorrect'}, 400
 
         return User.serialize(user)

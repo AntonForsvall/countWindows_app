@@ -14,7 +14,7 @@ class User(db.Model):
     username = db.Column(db.String(15), nullable=False, unique=True)
     company = db.Column(db.String(), nullable=False)
     firstname = db.Column(db.String(), nullable=False)
-    lastname = db.Column(db.String(), nullable=False)
+    lastname = db.Column(db.String())
     email = db.Column(db.String(), nullable=False, unique=True)
     password = db.Column(db.String(), nullable=False)
 
@@ -42,9 +42,3 @@ class User(db.Model):
             'email': self.email,
             'password': self.password
         }
-
-
-class Project(db.Model):
-
-
-class Counter(db.Model):

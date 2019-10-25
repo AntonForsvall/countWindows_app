@@ -31,7 +31,7 @@ class Register(Resource):
             return {'message': 'Emailadress already exists'}, 400
 
         api_key = self.generate_key()
-        hashed_password = bcrypt.generate_password_hash(json_data['password'])
+        hashed_password = bcrypt.generate_password_hash(json_data['password']).decode('utf-8')
 
         user = User(
             api_key=api_key,
