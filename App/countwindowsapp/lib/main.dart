@@ -57,7 +57,7 @@ Future signinUser() async {
   String userName = "";
   String apiKey = await getApiKey();
   if (apiKey.length > 0) {
-    bloc.signinUser("", "", apiKey);
+    userBloc.signinUser("", "", apiKey);
   } else {
     print("No api key");
   }

@@ -25,4 +25,4 @@ class UserBloc {
   }
 }
 
-final bloc = UserBloc();
+final userBloc = UserBloc();

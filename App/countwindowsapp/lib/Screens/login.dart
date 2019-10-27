@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Text('LOGIN'),
               onPressed: () {
                 if (usernameText.text != null || passwordText.text != null) {
-                  bloc
+                  userBloc
                       .signinUser(usernameText.text, passwordText.text, "")
                       .then((_) {
                     widget.login();
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
               if (usernameController.text != null ||
                   passwordController.text != null ||
                   emailController.text != null) {
-                bloc
+                userBloc
                     .registerUser(
                         usernameController.text,
                         firstNameController.text ?? "",
