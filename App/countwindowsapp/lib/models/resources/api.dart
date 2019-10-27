@@ -6,7 +6,6 @@ import 'package:countwindowsapp/models/users/user.dart';
 
 class ApiProvider {
   Client client = Client();
-  final _apiKey = 'you_api_key';
 
   Future<User> registerUser(String firstname, String lastname, String username,
       String email, String password) async {
@@ -46,6 +45,7 @@ class ApiProvider {
       throw Exception('Failed to load post');
     }
   }
+
 
   saveApiKey(String apiKey) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

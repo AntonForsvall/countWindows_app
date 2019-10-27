@@ -1,9 +1,9 @@
 from flask_restful import Resource
 from flask import request
-from Model import db, User, Project
+from Model import db, User, Project, Counter
 
 
-class Projects(Resource):
+class Counters(Resource):
 
     def post(self):
         header = request.headers['Authorization']
@@ -14,17 +14,20 @@ class Projects(Resource):
 
         else:
             user = User.query.filter_by(api_key=header).first()
+            project = Project.query.filter_by(user_id=user.id).first()
             if user:
-                project = Project(
+                counter = Counter(
                     user_id=user.id,
-                    project_name=json_data['project_name'],
+                    project_id=project.id,
+                    image=json_data['image'],
+                    value=json_data['value'],
                     date=json_data['date']
                 )
 
-                db.session.add(project)
+                db.session.add(counter)
                 db.session.commit()
 
-                result = Project.serialize(project)
+                result = Counter.serialize(counter)
                 return {"status": 'success', 'data': result}, 201
             else:
                 return {"Messege": "No user with that api key"}, 400
@@ -38,9 +41,10 @@ class Projects(Resource):
         else:
             user = User.query.filter_by(api_key=header).first()
             if user:
-                projects = Projects.query.filter_by(user_id=user.id).all()
-                for project in projects:
-                    result.append(Projects.serialize(project))
+                counters = Counters.query.filter_by(user_id=user.id).all()
+                for counter in counters:
+                    result.append(Counters.serialize(counter))
 
             return {"status": 'success', 'data': result}, 201
+
 

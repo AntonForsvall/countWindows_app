@@ -1,10 +1,11 @@
 class Counter {
   List <Counter> counters;
   String image;
-  String counterID;
+  int id;
   int value;
   DateTime date;
-  bool completed;
+  bool compleated;
 
-  Counter(this.counters, this.image, this.counterID, this.value, this.date, this.completed);
+  Counter(this.image, this.id, this.value, this.compleated);
+
 }

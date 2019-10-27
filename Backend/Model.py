@@ -44,18 +44,46 @@ class User(db.Model):
         }
 
 
+class Project(db.Model):
+
+    __tablename__ = 'projects'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    project_name = db.Column(db.String())
+    date = db.Column(db.String())
+
+    def __init__(self, user_id, project_name, date):
+        self.user_id = user_id
+        self.project_name = project_name
+        self.date = date
+
+    def __repr__(self):
+        return f'id {self.id}'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'project_name': self.project_name,
+            'date': self.date
+        }
+
+
 class Counter(db.Model):
 
     __tablename__ = 'counters'
 
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    project_id = db.Column(db.Integer(), db.ForeignKey('projects.id'))
     image = db.Column(db.String())
     value = db.Column(db.Integer())
-    date = db.Column(db.DateTime())
+    date = db.Column(db.String())
 
-    def __init__(self, user_id, image, value, date):
+    def __init__(self, user_id, project_id, image, value, date):
         self.user_id = user_id
+        self.project_id = project_id
         self.image = image
         self.value = value
         self.date = date
@@ -65,9 +93,10 @@ class Counter(db.Model):
 
     def serialize(self):
         return {
-            'user_id' : self.user_id,
-            'id' : self.id,
-            'image' : self.image,
-            'value' : self.value,
-            'date' : self.date,
+            'user_id': self.user_id,
+            'id': self.id,
+            'project_id': self.project_id,
+            'image': self.image,
+            'value': self.value,
+            'date': self.date,
         }
