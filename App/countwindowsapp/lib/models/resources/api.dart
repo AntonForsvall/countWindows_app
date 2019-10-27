@@ -31,6 +31,19 @@ class ApiProvider {
     }
   }
 
+  Future<User> fetchUser() async {
+  final response =
+      await client.get('http://127.0.0.1:5000/api/Register');
+
+  if (response.statusCode == 200) {
+    // If the call to the server was successful, parse the JSON.
+    return User.fromJson(json.decode(response.body));
+  } else {
+    // If that call was not successful, throw an error.
+    throw Exception('Failed to load post');
+  }
+}
+
   Future signinUser(String username, String password, String apiKey) async {
     final response = await client.post('http://127.0.0.1:5000/api/signin',
         headers: {"Authorization": apiKey},

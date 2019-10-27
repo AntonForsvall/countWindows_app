@@ -1,7 +1,7 @@
 //import 'package:flutter/rendering.dart';
 
 class User {
-  String frstname;
+  String firstname;
   String lastname;
   String username;
   String email;
@@ -9,7 +9,7 @@ class User {
   String apiKey;
   int id;
 
-  User(this.frstname, this.lastname, this.username, this.email, this.password,
+  User(this.firstname, this.lastname, this.username, this.email, this.password,
       this.apiKey, this.id);
 
   factory User.fromJson(Map<String, dynamic> parsedJson){
@@ -21,6 +21,6 @@ class User {
       parsedJson['password'],
       parsedJson['api_key'],
       parsedJson['id']
-    );
+  );
   }
 }
