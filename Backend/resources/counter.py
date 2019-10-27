@@ -41,9 +41,9 @@ class Counters(Resource):
         else:
             user = User.query.filter_by(api_key=header).first()
             if user:
-                counters = Counters.query.filter_by(user_id=user.id).all()
+                counters = Counter.query.filter_by(user_id=user.id).all()
                 for counter in counters:
-                    result.append(Counters.serialize(counter))
+                    result.append(Counter.serialize(counter))
 
             return {"status": 'success', 'data': result}, 201
 

@@ -38,9 +38,9 @@ class Projects(Resource):
         else:
             user = User.query.filter_by(api_key=header).first()
             if user:
-                projects = Projects.query.filter_by(user_id=user.id).all()
+                projects = Project.query.filter_by(user_id=user.id).all()
                 for project in projects:
-                    result.append(Projects.serialize(project))
+                    result.append(Project.serialize(project))
 
             return {"status": 'success', 'data': result}, 201
 
