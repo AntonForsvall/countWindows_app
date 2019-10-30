@@ -19,9 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Login Page Flutter Firebase"),
-        ),
         body: Center(
           child: widget.newUser ? signupPage() : signinPage(),
         ));
@@ -32,12 +29,48 @@ class _LoginPageState extends State<LoginPage> {
     TextEditingController passwordText = new TextEditingController();
 
     return Container(
+        decoration: BoxDecoration(color: Color(0xF50B1F3D)),
         padding: EdgeInsets.all(20.0),
         child: Column(children: <Widget>[
-          SizedBox(height: 20.0),
-          Text(
-            'Login information',
-            style: TextStyle(fontSize: 20),
+          SizedBox(height: 60.0),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                height: 100,
+                width: 130,
+                child: FlatButton(
+                    child: Text(
+                      'LOGIN',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 20),
+                    ),
+
+
+                  onPressed: () {},
+                  color: Color(0xF521334D),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+                ),
+              ),
+              Container(
+            height: 100,
+            width: 130,
+            child: FlatButton(
+                child: Text(
+                  'REGISTER',
+                  textAlign: TextAlign.center,
+                  style:
+                      TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 20),
+                ),
+
+
+              onPressed: () {},
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+            ),
+          ),
+            ],
           ),
           SizedBox(height: 20.0),
           TextFormField(

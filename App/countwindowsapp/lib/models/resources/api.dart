@@ -77,33 +77,6 @@ class ApiProvider {
     }
   }
 
-  Project projectFromJson(String str) {    
-   final jsonData = json.decode(str);    
-   return Project.fromJson(jsonData);
-}
-
-Future<Project> getProject() async{
-  final response = await client.get('http://127.0.0.1:5000/api/project');
-  return projectFromJson(response.body);
-}
-
-  Future<List<Project>> getProjectData(String apiKey) async {
-  List<Project> projectList;
-    String link =
-          'http://127.0.0.1:5000/api/project';
-    var response = await client
-        .get(Uri.encodeFull(link), headers: {"Authorization": apiKey});
-    print(response.body);
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        var rest = data as List;
-        await saveApiKey(data['data']['api_key']);
-        print(rest);
-        projectList = rest.map<Project>((json) => Project.fromJson(json)).toList();
-      }
-    print("List Size: ${projectList.length}");
-    return projectList;
-  }
 
   Future<Counter> saveCounter(
       String image, int value, String date, String apiKey) async {
