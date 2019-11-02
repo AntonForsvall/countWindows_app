@@ -9,13 +9,11 @@ import 'package:countwindowsapp/models/counters/counter.dart';
 class ApiProvider {
   Client client = Client();
 
-  Future<User> registerUser(String firstname, String lastname, String username,
+  Future<User> registerUser(String company,
       String email, String password) async {
     final response = await client.post('http://127.0.0.1:5000/api/Register',
         body: jsonEncode({
-          'firstname': firstname,
-          'lastname': lastname,
-          'username': username,
+          'company': company,
           'email': email,
           'password': password
         }));
@@ -31,24 +29,12 @@ class ApiProvider {
     }
   }
 
-  Future<User> fetchUser() async {
-  final response =
-      await client.get('http://127.0.0.1:5000/api/Register');
 
-  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON.
-    return User.fromJson(json.decode(response.body));
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load post');
-  }
-}
-
-  Future signinUser(String username, String password, String apiKey) async {
+  Future signinUser(String company, String password, String apiKey) async {
     final response = await client.post('http://127.0.0.1:5000/api/signin',
         headers: {"Authorization": apiKey},
         body: jsonEncode({
-          "username": username,
+          "company": company,
           "password": password,
         }));
     final Map result = json.decode(response.body);

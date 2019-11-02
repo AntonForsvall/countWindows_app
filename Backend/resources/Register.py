@@ -22,9 +22,9 @@ class Register(Resource):
         # json_data, errors = User.load(json_data)
         # if errors:
         #     return errors, 422
-        username = User.query.filter_by(username=json_data['username']).first()
-        if username:
-            return {'message': 'Username already exists'}, 400
+        company = User.query.filter_by(company=json_data['company']).first()
+        if company:
+            return {'message': 'Company already exists'}, 400
 
         email = User.query.filter_by(email=json_data['email']).first()
         if email:
@@ -35,13 +35,9 @@ class Register(Resource):
 
         user = User(
             api_key=api_key,
-            firstname=json_data['firstname'],
-            lastname=json_data['lastname'],
-            username=json_data['username'],
             email=json_data['email'],
             company=json_data['company'],
             password=hashed_password
-
         )
 
         db.session.add(user)

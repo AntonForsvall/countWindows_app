@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
             ? getHomePage()
             : LoginPage(
                 login: login,
-                newUser: false,
               );
       },
     );

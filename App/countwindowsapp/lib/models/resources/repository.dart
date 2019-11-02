@@ -7,12 +7,12 @@ import 'package:countwindowsapp/models/counters/counter.dart';
 class Repository {
   final apiProvider = ApiProvider();
 
-  Future<User> registerUser(String firstname, String lastname, String username,
+  Future<User> registerUser(String company,
           String email, String password) =>
-      apiProvider.registerUser(firstname, lastname, username, email, password);
+      apiProvider.registerUser(company, email, password);
 
-  Future signinUser(String username, String password, String apiKey) =>
-      apiProvider.signinUser(username, password, apiKey);
+  Future signinUser(String company, String password, String apiKey) =>
+      apiProvider.signinUser(company, password, apiKey);
 
   Future<Project> saveProject(String projectName, String date, String apiKey) =>
       apiProvider.saveProject(projectName, date, apiKey);
