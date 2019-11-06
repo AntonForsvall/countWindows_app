@@ -26,12 +26,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String apiKey = "";
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: signinUser(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        String apiKey = "";
         if (snapshot.hasData) {
           apiKey = snapshot.data;
         } else {
@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
     String apiKey = await getApiKey();
     if (apiKey.length > 0) {
       userBloc.signinUser("", "", apiKey);
+      print(apiKey);
     } else {
       print("No api key");
     }
@@ -77,16 +78,14 @@ class _HomePageState extends State<HomePage> {
       home: new Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blueAccent,
-            actions: <Widget>[FlatButton(
-                  child: Icon(Icons.exit_to_app),
+            actions: <Widget>[IconButton(icon:Icon(Icons.exit_to_app),
                   onPressed: () {
                     logout();
                   },
-                  color: Colors.white,
                 ),
                 ],
           ),
-          body: ProjectPage(),
+          body: ProjectPage(apiKey: apiKey,),
           floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed: (){}, backgroundColor: Colors.blueAccent,),
       )
     );

@@ -80,6 +80,32 @@ class ApiProvider {
     }
   }
 
+  Future <List<Project>> getUserProjects(String apiKey) async {
+    final response = await client.get('http://127.0.0.1:5000/api/project', headers: {
+      'Authorization' : apiKey
+    });
+    final  Map result = json.decode(response.body);
+    if (response.statusCode == 201) {
+      List<Project> projects = [];
+      for (Map json_ in result['data']){
+        try {
+          projects.add(Project.fromJson(json_));
+        }
+        catch(Exception) {
+          print(Exception);
+        }
+      }
+      for (Project project in projects) {
+        print(project.id);
+      }
+      return projects;
+    }
+    else {
+      // if that call was not successful, throw an error
+      throw Exception('Failed to load projects');
+    }
+  }
+
   saveApiKey(String apiKey) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('API_Token', apiKey);
