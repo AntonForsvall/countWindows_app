@@ -23,4 +23,7 @@ class Repository {
 
   Future getUserProjects(String apiKey)
   => apiProvider.getUserProjects(apiKey);
+
+  Future getUserCounters(String apiKey, int projectId)
+  => apiProvider.getUserCounters(apiKey, projectId);
 }

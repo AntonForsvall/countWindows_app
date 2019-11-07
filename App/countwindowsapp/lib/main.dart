@@ -85,8 +85,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 ],
           ),
-          body: ProjectPage(apiKey: apiKey,),
-          floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed: (){}, backgroundColor: Colors.blueAccent,),
+          body: ProjectPage(apiKey: apiKey,)
       )
     );
   }

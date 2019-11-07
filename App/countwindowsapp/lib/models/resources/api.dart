@@ -106,6 +106,34 @@ class ApiProvider {
     }
   }
 
+  Future <List<Counter>> getUserCounters(String apiKey, int projectId) async {
+    final response = await client.get('http://127.0.0.1:5000/api/counter', headers: {
+      'Authorization' : apiKey
+    });
+    final  Map result = json.decode(response.body);
+    if (response.statusCode == 201) {
+      List<Counter> counters = [];
+      for (Map json_ in result['data']){
+        try {
+            print(json_);
+            counters.add(Counter.fromJson(json_));
+        }
+        catch(Exception) {
+          print(Exception);
+        }
+      }
+      for (Counter counter in counters) {
+        print(counter.id);
+        print(counter.projectId);
+      }
+      return counters;
+    }
+    else {
+      // if that call was not successful, throw an error
+      throw Exception('Failed to load projects');
+    }
+  }
+
   saveApiKey(String apiKey) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('API_Token', apiKey);

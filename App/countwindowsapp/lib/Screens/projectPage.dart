@@ -1,12 +1,14 @@
 // import the Flutter sdk
+import 'package:countwindowsapp/models/projects/project_bloc_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:countwindowsapp/UI/widgets/projectWidget.dart';
 import 'package:countwindowsapp/models/projects/project.dart';
-import 'package:countwindowsapp/models/projects/project_bloc_provider.dart';
+
 
 class ProjectPage extends StatefulWidget {
   final String apiKey;
-  ProjectPage({this.apiKey});
+  final int projectId;
+  ProjectPage({this.apiKey, this.projectId});
   @override
   _ProjectPageState createState() => _ProjectPageState();
 }
@@ -14,9 +16,12 @@ class ProjectPage extends StatefulWidget {
 class _ProjectPageState extends State<ProjectPage> {
   List<Project> projectList = [];
   GetProjectBloc getProjectBloc;
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController projectNameController = new TextEditingController();
 
   @override
   void initState() {
+    super.initState();
     getProjectBloc = GetProjectBloc(widget.apiKey);
   }
 
@@ -27,35 +32,77 @@ class _ProjectPageState extends State<ProjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Color(0xF50B1F3D),
-        child: StreamBuilder(
-          stream: getProjectBloc.getProjects,
-          initialData: [],
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot != null) {
-              if (snapshot.data.length > 0) {
-                return _buildReorderableListSimple(context, snapshot.data);
-              } else if (snapshot.data == 0) {
-                return Center(
-                  child: Text('No Data'),
+    return 
+        Scaffold(
+          body: Container(
+            color: Color(0xF50B1F3D),
+            child: StreamBuilder(
+              stream: getProjectBloc.getProjects,
+              initialData: [],
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot != null) {
+                  if (snapshot.data.length > 0) {
+                    return _buildReorderableListSimple(context, snapshot.data);
+                  } else if (snapshot.data == 0) {
+                    return Center(
+                      child: Text('No Data'),
+                    );
+                  }
+                } else if (snapshot.hasError) {
+                  return Container();
+                }
+                print(snapshot.data);
+                return CircularProgressIndicator();
+              },
+            ),
+          ),
+          floatingActionButton:  FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text('Project Name'),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: projectNameController,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RaisedButton(child: Text('Save', style: TextStyle(color: Colors.white),), color: Color(0xF50B1F3D),
+                          onPressed: (){
+                            if(_formKey.currentState.validate()){
+                              projectBloc.saveProject(projectNameController.text, 'test', widget.apiKey);
+                              Navigator.of(context).pop();
+                            }
+                          }
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 );
               }
-            } else if (snapshot.hasError) {
-              return Container();
-            }
-            print(snapshot.data);
-            return CircularProgressIndicator();
+            );
           },
+          backgroundColor: Colors.blueAccent,
         ),
-      );
+    );
   }
 
   Widget _buildListTile(BuildContext context, Project item) {
     return ListTile(
       key: Key(item.id.toString()),
       title: ProjectWidget(
-        projectName: item.projectName,
+        projectName: item.projectName, projectId: item.id, apiKey: widget.apiKey,
       ),
     );
   }
@@ -67,7 +114,7 @@ class _ProjectPageState extends State<ProjectPage> {
       child: ReorderableListView(
         // handleSide: ReorderableListSimpleSide.Right,
         // handleIcon: Icon(Icons.access_alarm),
-        padding: EdgeInsets.only(top: 300.0),
+        padding: EdgeInsets.only(top: 50),
         children: projectList
             .map((Project item) => _buildListTile(context, item))
             .toList(),

@@ -1,16 +1,21 @@
+import 'package:countwindowsapp/Screens/counterPage.dart';
 import 'package:countwindowsapp/models/projects/project.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ProjectWidget extends StatelessWidget {
   final String projectName;
+  final int projectId;
   final String keyValue;
+  final String apiKey;
 
-  ProjectWidget({this.projectName, this.keyValue});
+  ProjectWidget({this.projectName, this.keyValue, this.projectId, this.apiKey});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector( onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CounterPage(projectId: projectId, apiKey: apiKey,)));
+    }, child: Container(
       key: Key(keyValue),
       margin: EdgeInsets.only(bottom: 5),
       padding: EdgeInsets.all(10),
@@ -28,9 +33,11 @@ class ProjectWidget extends StatelessWidget {
       child:
           Column(
             children: <Widget>[
-              Text(projectName)
+              Text(projectName),
+              Text(projectId.toString()),
+              Text(apiKey)
             ],
           )
-    );
+    ));
   }
 }

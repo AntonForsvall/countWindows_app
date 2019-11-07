@@ -18,4 +18,27 @@ class CounterBloc {
   }
 }
 
+class GetCounterBloc {
+  final _repository = Repository();
+  final _counterSubject = BehaviorSubject<List<Counter>>();
+  String apiKey;
+  int projectId;
+
+  var _projects = <Counter>[];
+
+  GetCounterBloc(String apiKey, int projectId) {
+    this.apiKey = apiKey;
+    this.projectId = projectId;
+    _updateCounters(apiKey, projectId).then((_) {
+      _counterSubject.add(_projects);
+    });
+  }
+  
+    Stream<List<Counter>> get getCounters => _counterSubject.stream;
+
+    Future<Null> _updateCounters(String apiKey, int projectId) async {
+    _projects = await _repository.getUserCounters(apiKey, projectId);
+  }
+}
+
 final counterBloc = CounterBloc();
