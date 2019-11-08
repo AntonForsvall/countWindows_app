@@ -1,19 +1,21 @@
-
 import 'package:countwindowsapp/Screens/addWindowPage.dart';
 import 'package:countwindowsapp/Screens/projectPage.dart';
 import 'package:countwindowsapp/UI/widgets/counterWidget.dart';
 import 'package:countwindowsapp/UI/widgets/projectWidget.dart';
 import 'package:countwindowsapp/models/counters/counter_bloc_provider.dart';
 import 'package:countwindowsapp/models/counters/counter.dart';
+import 'package:countwindowsapp/models/projects/project_bloc_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CounterPage extends StatefulWidget {
   final String apiKey;
   final int projectId;
-  CounterPage({Key key, this.apiKey, @required this.projectId}) : super (key:key);
+  final String projectName;
+  CounterPage(
+      {Key key, this.apiKey, @required this.projectId, this.projectName})
+      : super(key: key);
   @override
-
   _CounterPageState createState() => _CounterPageState();
 }
 
@@ -30,50 +32,62 @@ class _CounterPageState extends State<CounterPage> {
   void dispose() {
     super.dispose();
   }
+
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent[200],
+        title: Text(
+          '${widget.projectName}',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xF50B1F3D),
+        bottomOpacity: 0,
+        elevation: 0,
       ),
       body: Container(
-            color: Color(0xF50B1F3D),
-            child: StreamBuilder(
-              stream: getCounterBloc.getCounters,
-              initialData: [],
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot != null) {
-                  if (snapshot.data.length > 0) {
-                    return _buildReorderableListSimple(context, snapshot.data);
-                  } else if (snapshot.data == 0) {
-                    return Center(
-                      child: Text('No Data'),
-                    );
-                  }
-                } else if (snapshot.hasError) {
-                  return Container();
-                }
-                print(snapshot.data);
+        color: Color(0xF50B1F3D),
+        child: StreamBuilder(
+          stream: getCounterBloc.getCounters,
+          initialData: [],
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot != null) {
+              if (snapshot.data.length > 0) {
+                return _buildReorderableListSimple(context, snapshot.data);
+              } else if (snapshot.data == 0) {
                 return Center(
-                      child: Text('No Data'));
-              },
-            ),
-          ),
-          floatingActionButton:  FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AddWindowPage(apiKey: widget.apiKey, projectId: widget.projectId,)));
+                  child: Text('No Data'),
+                );
+              }
+            } else if (snapshot.hasError) {
+              return Container();
+            }
+            print(snapshot.data);
+            return _noDataWidget(context);
           },
-          backgroundColor: Colors.blueAccent,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddWindowPage(
+                        apiKey: widget.apiKey,
+                        projectId: widget.projectId,
+                      )));
+        },
+        backgroundColor: Color(0xF88ACEA1),
+      ),
     );
   }
 
   Widget _buildListTile(BuildContext context, Counter item) {
     return ListTile(
       key: Key(item.id.toString()),
-      title: CounterWidget(value: item.value, counterId: item.id, projectId: widget.projectId
-      ),
+      title: CounterWidget(
+          value: item.value, counterId: item.id, projectId: widget.projectId),
     );
   }
 
@@ -97,6 +111,18 @@ class _CounterPageState extends State<CounterPage> {
         },
       ),
     );
+  }
+
+  Widget _noDataWidget(BuildContext context) {
+    return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('No Counter is yet created!', style: TextStyle(color: Colors.white, fontSize: 20),),
+        SizedBox(height: 10),
+        Text('Hit the green button to create your Counters...', style: TextStyle(color: Colors.white, fontSize: 15),),
+      ],
+    ));
   }
 
   void onReorder(int oldIndex, int newIndex) {

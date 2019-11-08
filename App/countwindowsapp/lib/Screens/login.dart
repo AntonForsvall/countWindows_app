@@ -15,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController confirmPasswordController = new TextEditingController();
   TextEditingController companyController = new TextEditingController();
+
   bool newUser = false;
   bool viewPassword = false;
 
@@ -22,6 +23,112 @@ class _LoginPageState extends State<LoginPage> {
   Color greyTextColor = new Color.fromRGBO(102, 107, 121, 100);
   Color lightBlueButton = new Color(0xF521334D);
   Color backroundColor = new Color(0xF50B1F3D);
+
+  TextEditingController companyText = new TextEditingController();
+  TextEditingController passwordText = new TextEditingController();
+
+  @override
+  void dispose() {
+    companyText.dispose();
+    passwordText.dispose();
+    super.dispose();
+  }
+
+  void _toggleVisibility() {
+    setState(() {
+      viewPassword = !viewPassword;
+    });
+  }
+
+  Widget _onPressedRegister(BuildContext context) {
+    return FlatButton(
+      child: Text(
+        'REGISTER',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: whiteTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            letterSpacing: 1),
+      ),
+      onPressed: () {
+        setState(() {
+          newUser = true;
+        });
+      },
+      color: newUser ? lightBlueButton : null,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+    );
+  }
+
+  Widget _notPressedRegister(BuildContext context) {
+    return OutlineButton(
+      child: Text(
+        'REGISTER',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: greyTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            letterSpacing: 1),
+      ),
+      onPressed: () {
+        setState(() {
+          newUser = true;
+        });
+      },
+      color: lightBlueButton,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+      borderSide: BorderSide(
+        color: greyTextColor,
+      ),
+    );
+  }
+
+  Widget _notPressedLogin(BuildContext context) {
+    return OutlineButton(
+      child: Text(
+        'LOGIN',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: greyTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            letterSpacing: 1),
+      ),
+      onPressed: () {
+        setState(() {
+          newUser = false;
+        });
+      },
+      color: newUser ? lightBlueButton : null,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+      borderSide: BorderSide(
+        color: greyTextColor,
+      ),
+    );
+  }
+
+  Widget _onPressedLogin(BuildContext context) {
+    return FlatButton(
+      child: Text(
+        'LOGIN',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: whiteTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            letterSpacing: 1),
+      ),
+      onPressed: () {
+        setState(() {
+          newUser = false;
+        });
+      },
+      color: lightBlueButton,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,49 +146,16 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         height: 100,
                         width: 130,
-                        child: FlatButton(
-                          child: Text(
-                            'LOGIN',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: newUser ? greyTextColor : whiteTextColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              newUser = false;
-                            });
-                          },
-                          color: newUser ? null : lightBlueButton,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0)),
-                        ),
+                        child: newUser
+                            ? _notPressedLogin(context)
+                            : _onPressedLogin(context),
                       ),
                       Container(
                         height: 100,
                         width: 130,
-                        child: FlatButton(
-                          child: Text(
-                            'REGISTER',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: newUser ? whiteTextColor : greyTextColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20,
-                                letterSpacing: 1),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              newUser = true;
-                            });
-                          },
-                          color: newUser ? lightBlueButton : null,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0)),
-                        ),
+                        child: newUser
+                            ? _onPressedRegister(context)
+                            : _notPressedRegister(context),
                       ),
                     ],
                   ),
@@ -100,8 +174,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget signinPage() {
-    TextEditingController companyText = new TextEditingController();
-    TextEditingController passwordText = new TextEditingController();
     final _formKey = GlobalKey<FormState>();
 
     return Form(
@@ -116,25 +188,20 @@ class _LoginPageState extends State<LoginPage> {
                 }
                 return null;
               },
+              onSaved: (text) {
+                return text;
+              },
               controller: companyText,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: 'Company',
                 icon: Icon(
-                  Icons.mail,
+                  Icons.business,
                   color: Color(0xF88ACEA1),
                 ),
                 labelStyle: TextStyle(color: Colors.grey),
               )),
           SizedBox(height: 30.0),
-          Container(
-            alignment: Alignment.centerRight,
-            child: Text(
-              'View Password',
-              style: TextStyle(color: Colors.grey, fontSize: 12),
-            ),
-            padding: EdgeInsets.all(0),
-          ),
           TextFormField(
             validator: (value) {
               if (value.isEmpty) {
@@ -143,23 +210,15 @@ class _LoginPageState extends State<LoginPage> {
               return null;
             },
             controller: passwordText,
-            obscureText: viewPassword ? false : true,
+            obscureText: viewPassword,
             decoration: InputDecoration(
               labelText: 'Password',
               suffixIcon: IconButton(
-                icon: Icon(Icons.remove_red_eye),
-                color: viewPassword ? Color(0xF88ACEA1) : Colors.red,
-                onPressed: () {
-                  if (viewPassword) {
-                    setState(() {
-                      viewPassword = false;
-                    });
-                  } else {
-                    setState(() {
-                      viewPassword = true;
-                    });
-                  }
-                },
+                icon: viewPassword
+                    ? Icon(Icons.visibility_off)
+                    : Icon(Icons.visibility),
+                color: viewPassword ? Colors.red : Color(0xF88ACEA1),
+                onPressed: _toggleVisibility,
               ),
               icon: Icon(Icons.lock, color: Color(0xF88ACEA1)),
               labelStyle: TextStyle(color: Colors.grey),
@@ -309,12 +368,8 @@ class _LoginPageState extends State<LoginPage> {
                           widget.login();
                         });
                       }
-                    } else {
-                      
-                    }
-                  } else {
-
-                  }
+                    } else {}
+                  } else {}
                 }
               },
               color: Color(0xF88ACEA1),

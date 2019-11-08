@@ -29,7 +29,7 @@ class _CounterWidgetState extends State<CounterWidget> {
       padding: EdgeInsets.all(10),
       height: 100,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white70,
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           new BoxShadow(

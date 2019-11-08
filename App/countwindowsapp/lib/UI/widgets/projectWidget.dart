@@ -14,14 +14,14 @@ class ProjectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector( onTap: (){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => CounterPage(projectId: projectId, apiKey: apiKey,)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CounterPage(projectId: projectId, apiKey: apiKey, projectName: projectName,)));
     }, child: Container(
       key: Key(keyValue),
       margin: EdgeInsets.only(bottom: 5),
       padding: EdgeInsets.all(10),
       height: 100,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white70,
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           new BoxShadow(
@@ -33,8 +33,8 @@ class ProjectWidget extends StatelessWidget {
       child:
           Column(
             children: <Widget>[
-              Text(projectName),
-              Text(projectId.toString()),
+              Text(projectName, style: TextStyle(color: Color(0xF50B1F3D),),),
+              Text(projectId.toString(), style: TextStyle(color: Color(0xF50B1F3D),)),
             ],
           )
     ));

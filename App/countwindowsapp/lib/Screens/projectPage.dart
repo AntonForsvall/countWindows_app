@@ -52,14 +52,13 @@ class _ProjectPageState extends State<ProjectPage> {
                   return Container();
                 }
                 print(snapshot.data);
-                return Center(
-                      child: Text('No Data'),
-                    );
+                return _noDataWidget(context);
               },
             ),
           ),
           floatingActionButton:  FloatingActionButton(
           child: Icon(Icons.add),
+          
           onPressed: () {
             showDialog(
               context: context,
@@ -95,7 +94,7 @@ class _ProjectPageState extends State<ProjectPage> {
               }
             );
           },
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Color(0xF88ACEA1),
         ),
     );
   }
@@ -129,6 +128,18 @@ class _ProjectPageState extends State<ProjectPage> {
         },
       ),
     );
+  }
+
+    Widget _noDataWidget(BuildContext context) {
+    return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('No Project is yet created!', style: TextStyle(color: Colors.white, fontSize: 20),),
+        SizedBox(height: 10),
+        Text('Hit the green button to create your Projects...', style: TextStyle(color: Colors.white, fontSize: 15),),
+      ],
+    ));
   }
 
   void onReorder(int oldIndex, int newIndex) {

@@ -3,6 +3,7 @@ import 'package:countwindowsapp/Screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:countwindowsapp/models/users/user_bloc_provider.dart';
 import 'package:countwindowsapp/Screens/projectPage.dart';
+import 'package:countwindowsapp/models/projects/project_bloc_provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -55,7 +56,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future signinUser() async {
-    String userName = "";
     String apiKey = await getApiKey();
     if (apiKey.length > 0) {
       userBloc.signinUser("", "", apiKey);
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
 
   Future getApiKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getString("API_Token");
+    return prefs.getString("API_Token");
   }
 
   Widget getHomePage() {
@@ -77,12 +77,20 @@ class _HomePageState extends State<HomePage> {
       color: Colors.yellow,
       home: new Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.blueAccent,
-            actions: <Widget>[IconButton(icon:Icon(Icons.exit_to_app),
+            title: Text('Your Projects', style: TextStyle(color: Colors.white),),
+            backgroundColor: Color(0xF50B1F3D),
+            bottomOpacity: 0,
+            elevation: 0,
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.settings, color: Colors.white, size: 30,), onPressed: (){}),
+              SizedBox(width: 10,),
+              IconButton(icon:Icon(Icons.exit_to_app, size: 30,),
                   onPressed: () {
                     logout();
                   },
                 ),
+                
+                
                 ],
           ),
           body: ProjectPage(apiKey: apiKey,)
