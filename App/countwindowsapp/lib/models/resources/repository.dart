@@ -18,8 +18,8 @@ class Repository {
       apiProvider.saveProject(projectName, date, apiKey);
 
   Future<Counter> saveCounter(
-          String image, int value, String date, String apiKey) =>
-      apiProvider.saveCounter(image, value, date, apiKey);
+          String image, int value, String date, String apiKey, int projectId) =>
+      apiProvider.saveCounter(image, value, date, apiKey, projectId);
 
   Future getUserProjects(String apiKey)
   => apiProvider.getUserProjects(apiKey);

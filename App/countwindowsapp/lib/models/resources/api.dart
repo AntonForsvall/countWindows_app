@@ -65,10 +65,10 @@ class ApiProvider {
 
 
   Future<Counter> saveCounter(
-      String image, int value, String date, String apiKey) async {
+      String image, int value, String date, String apiKey, int projectId) async {
     final response = await client.post('http://127.0.0.1:5000/api/counter',
         headers: {"Authorization": apiKey},
-        body: jsonEncode({"image": image, "value": value, "date": date}));
+        body: jsonEncode({"image": image, "value": value, "date": date, "project_id": projectId}));
     final Map result = json.decode(response.body);
     if (response.statusCode == 201) {
       // if the call to the server was successful, parse the JSON
@@ -115,8 +115,10 @@ class ApiProvider {
       List<Counter> counters = [];
       for (Map json_ in result['data']){
         try {
-            print(json_);
-            counters.add(Counter.fromJson(json_));
+            if(json_['project_id'] == projectId) {
+              counters.add(Counter.fromJson(json_));
+            }
+            
         }
         catch(Exception) {
           print(Exception);

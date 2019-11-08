@@ -294,9 +294,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('Processing Data'),
-                  ));
                   if (passwordController != null) {
                     if (passwordController.text ==
                         confirmPasswordController.text) {
@@ -313,14 +310,10 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       }
                     } else {
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text('Passwords is not equal'),
-                      ));
+                      
                     }
                   } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('Fill in Password Please'),
-                    ));
+
                   }
                 }
               },

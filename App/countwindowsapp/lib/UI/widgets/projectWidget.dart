@@ -35,7 +35,6 @@ class ProjectWidget extends StatelessWidget {
             children: <Widget>[
               Text(projectName),
               Text(projectId.toString()),
-              Text(apiKey)
             ],
           )
     ));

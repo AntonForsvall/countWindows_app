@@ -8,8 +8,8 @@ class CounterBloc {
 
   Observable<Counter> get getCounter => _counterGetter.stream;
 
-  saveCounter(String image, int value, String date, String apiKey) async {
-    Counter counter = await _repository.saveCounter(image, value, date, apiKey);
+  saveCounter(String image, int value, String date, String apiKey, int projectId) async {
+    Counter counter = await _repository.saveCounter(image, value, date, apiKey, projectId);
     _counterGetter.sink.add(counter);
   }
 

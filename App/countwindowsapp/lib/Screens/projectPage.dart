@@ -52,7 +52,9 @@ class _ProjectPageState extends State<ProjectPage> {
                   return Container();
                 }
                 print(snapshot.data);
-                return CircularProgressIndicator();
+                return Center(
+                      child: Text('No Data'),
+                    );
               },
             ),
           ),

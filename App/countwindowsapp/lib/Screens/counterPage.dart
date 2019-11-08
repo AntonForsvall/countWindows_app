@@ -1,4 +1,5 @@
 
+import 'package:countwindowsapp/Screens/addWindowPage.dart';
 import 'package:countwindowsapp/Screens/projectPage.dart';
 import 'package:countwindowsapp/UI/widgets/counterWidget.dart';
 import 'package:countwindowsapp/UI/widgets/projectWidget.dart';
@@ -19,11 +20,10 @@ class CounterPage extends StatefulWidget {
 class _CounterPageState extends State<CounterPage> {
   List<Counter> counterList = [];
   GetCounterBloc getCounterBloc;
-  final projectWidget = ProjectWidget();
   @override
   void initState() {
     super.initState();
-    getCounterBloc = GetCounterBloc(widget.apiKey, projectWidget.projectId);
+    getCounterBloc = GetCounterBloc(widget.apiKey, widget.projectId);
   }
 
   @override
@@ -33,6 +33,9 @@ class _CounterPageState extends State<CounterPage> {
   @override
   Widget build (BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueAccent[200],
+      ),
       body: Container(
             color: Color(0xF50B1F3D),
             child: StreamBuilder(
@@ -51,13 +54,15 @@ class _CounterPageState extends State<CounterPage> {
                   return Container();
                 }
                 print(snapshot.data);
-                return CircularProgressIndicator();
+                return Center(
+                      child: Text('No Data'));
               },
             ),
           ),
           floatingActionButton:  FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddWindowPage(apiKey: widget.apiKey, projectId: widget.projectId,)));
           },
           backgroundColor: Colors.blueAccent,
         ),
@@ -67,7 +72,7 @@ class _CounterPageState extends State<CounterPage> {
   Widget _buildListTile(BuildContext context, Counter item) {
     return ListTile(
       key: Key(item.id.toString()),
-      title: CounterWidget(value: item.value, counterId: item.id, projectId: item.projectId
+      title: CounterWidget(value: item.value, counterId: item.id, projectId: widget.projectId
       ),
     );
   }
