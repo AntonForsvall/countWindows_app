@@ -5,13 +5,12 @@ from resources.Signin import Signin
 from resources.Project import Projects
 from resources.counter import Counters
 
-
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 
 
 # Routes
-api.add_resource(Register, '/Register')
+api.add_resource(Register, '/register')
 
 api.add_resource(Signin, '/signin')
 

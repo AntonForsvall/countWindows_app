@@ -11,7 +11,7 @@ class ApiProvider {
 
   Future<User> registerUser(String company,
       String email, String password) async {
-    final response = await client.post('http://127.0.0.1:5000/api/Register',
+    final response = await client.post('http://127.0.0.1:5000/api/register',
         body: jsonEncode({
           'company': company,
           'email': email,

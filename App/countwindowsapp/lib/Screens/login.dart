@@ -16,8 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController confirmPasswordController = new TextEditingController();
   TextEditingController companyController = new TextEditingController();
 
+  String _company;
+  String _email;
+
   bool newUser = false;
   bool viewPassword = false;
+  bool _autoValidate = false;
 
   Color whiteTextColor = new Color(0xFFFFFFFF);
   Color greyTextColor = new Color.fromRGBO(102, 107, 121, 100);
@@ -38,6 +42,16 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       viewPassword = !viewPassword;
     });
+  }
+
+  String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
   }
 
   Widget _onPressedRegister(BuildContext context) {
@@ -178,6 +192,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Form(
       key: _formKey,
+      autovalidate: _autoValidate,
       child: Column(
         children: <Widget>[
           SizedBox(height: 15.0),
@@ -188,11 +203,10 @@ class _LoginPageState extends State<LoginPage> {
                 }
                 return null;
               },
-              onSaved: (text) {
-                return text;
+              onSaved: (val) {
+                _company = val;
               },
               controller: companyText,
-              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: 'Company',
                 icon: Icon(
@@ -241,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             child: FlatButton(
               child: Text(
-                'SIGN IN',
+                'LOGIN',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.white,
@@ -250,12 +264,15 @@ class _LoginPageState extends State<LoginPage> {
                     letterSpacing: 1),
               ),
               onPressed: () {
-                if (companyText.text != null || passwordText.text != null) {
+                if (_formKey.currentState.validate()) {
                   userBloc
-                      .signinUser(companyText.text, passwordText.text, "")
+                      .signinUser(
+                          companyText.text.toUpperCase(), passwordText.text, "")
                       .then((_) {
                     widget.login();
                   });
+                } else {
+                  _autoValidate = true;
                 }
               },
               color: Color(0xF88ACEA1),
@@ -276,11 +293,9 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           SizedBox(height: 15.0),
           TextFormField(
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter your Email';
-                }
-                return null;
+              validator: validateEmail,
+              onSaved: (val){
+                _email = val;
               },
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -326,11 +341,13 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox(height: 15.0),
           TextFormField(
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter Company name';
+            validator: (String value) {
+              if(value.isEmpty){
+                return 'Enter a valid Comapny Name';
               }
-              return null;
+              else {
+                return null;
+              }
             },
             controller: companyController,
             decoration: InputDecoration(
@@ -360,7 +377,7 @@ class _LoginPageState extends State<LoginPage> {
                           companyController != null) {
                         userBloc
                             .registerUser(
-                          companyController.text,
+                          companyController.text.toUpperCase(),
                           emailController.text,
                           passwordController.text,
                         )
@@ -369,7 +386,7 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       }
                     } else {}
-                  } else {}
+                  } else {_autoValidate = true;}
                 }
               },
               color: Color(0xF88ACEA1),
