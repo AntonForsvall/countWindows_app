@@ -9,14 +9,11 @@ import 'package:countwindowsapp/models/counters/counter.dart';
 class ApiProvider {
   Client client = Client();
 
-  Future<User> registerUser(String company,
-      String email, String password) async {
+  Future<User> registerUser(
+      String company, String email, String password) async {
     final response = await client.post('http://127.0.0.1:5000/api/register',
-        body: jsonEncode({
-          'company': company,
-          'email': email,
-          'password': password
-        }));
+        body: jsonEncode(
+            {'company': company, 'email': email, 'password': password}));
 
     final Map result = json.decode(response.body);
     if (response.statusCode == 201) {
@@ -28,7 +25,6 @@ class ApiProvider {
       throw Exception('failed to load post');
     }
   }
-
 
   Future signinUser(String company, String password, String apiKey) async {
     final response = await client.post('http://127.0.0.1:5000/api/signin',
@@ -55,7 +51,6 @@ class ApiProvider {
     final Map result = json.decode(response.body);
     if (response.statusCode == 201) {
       // if the call to the server was successful, parse the JSON
-      await saveApiKey(result['data']['api_key']);
       return Project.fromJson(result['data']);
     } else {
       //if that call was not successful, throw an error
@@ -63,12 +58,30 @@ class ApiProvider {
     }
   }
 
+  Future<Project> deleteProject(String apiKey, int projectId) async {
+    final response = await client.delete('http://127.0.0.1:5000/api/project',
+        headers: {"Authorization": apiKey});
+    final Map result = json.decode(response.body);
+    print('STATUSCODE: ' + response.statusCode.toString());
+    if (response.statusCode == 201) {
+      // if the call to the server was successful, parse the JSON
+      return Project.fromJson(result['data']);
+    } else {
+      //if that call was not successful, throw an error
+      throw Exception('failed to load delete');
+    }
+  }
 
-  Future<Counter> saveCounter(
-      String image, int value, String date, String apiKey, int projectId) async {
+  Future<Counter> saveCounter(String image, int value, String date,
+      String apiKey, int projectId) async {
     final response = await client.post('http://127.0.0.1:5000/api/counter',
         headers: {"Authorization": apiKey},
-        body: jsonEncode({"image": image, "value": value, "date": date, "project_id": projectId}));
+        body: jsonEncode({
+          "image": image,
+          "value": value,
+          "date": date,
+          "project_id": projectId
+        }));
     final Map result = json.decode(response.body);
     if (response.statusCode == 201) {
       // if the call to the server was successful, parse the JSON
@@ -80,47 +93,42 @@ class ApiProvider {
     }
   }
 
-  Future <List<Project>> getUserProjects(String apiKey) async {
-    final response = await client.get('http://127.0.0.1:5000/api/project', headers: {
-      'Authorization' : apiKey
-    });
-    final  Map result = json.decode(response.body);
+  Future<List<Project>> getUserProjects(String apiKey) async {
+    final response = await client.get('http://127.0.0.1:5000/api/project',
+        headers: {'Authorization': apiKey});
+    final Map result = json.decode(response.body);
     if (response.statusCode == 201) {
       List<Project> projects = [];
-      for (Map json_ in result['data']){
+      for (Map json_ in result['data']) {
         try {
           projects.add(Project.fromJson(json_));
-        }
-        catch(Exception) {
+        } catch (Exception) {
           print(Exception);
         }
       }
       for (Project project in projects) {
         print(project.id);
       }
+      print(projects.toString());
       return projects;
-    }
-    else {
+    } else {
       // if that call was not successful, throw an error
       throw Exception('Failed to load projects');
     }
   }
 
-  Future <List<Counter>> getUserCounters(String apiKey, int projectId) async {
-    final response = await client.get('http://127.0.0.1:5000/api/counter', headers: {
-      'Authorization' : apiKey
-    });
-    final  Map result = json.decode(response.body);
+  Future<List<Counter>> getUserCounters(String apiKey, int projectId) async {
+    final response = await client.get('http://127.0.0.1:5000/api/counter',
+        headers: {'Authorization': apiKey});
+    final Map result = json.decode(response.body);
     if (response.statusCode == 201) {
       List<Counter> counters = [];
-      for (Map json_ in result['data']){
+      for (Map json_ in result['data']) {
         try {
-            if(json_['project_id'] == projectId) {
-              counters.add(Counter.fromJson(json_));
-            }
-            
-        }
-        catch(Exception) {
+          if (json_['project_id'] == projectId) {
+            counters.add(Counter.fromJson(json_));
+          }
+        } catch (Exception) {
           print(Exception);
         }
       }
@@ -129,8 +137,7 @@ class ApiProvider {
         print(counter.projectId);
       }
       return counters;
-    }
-    else {
+    } else {
       // if that call was not successful, throw an error
       throw Exception('Failed to load projects');
     }

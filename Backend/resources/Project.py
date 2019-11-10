@@ -44,3 +44,22 @@ class Projects(Resource):
 
             return {"status": 'success', 'data': result}, 201
 
+    def delete(self):
+        header = request.headers['Authorization']
+        json_data = request.get_json(force=True)
+
+        if not header:
+            return {'Message': 'No Api Key'}, 400
+
+        else:
+            user = User.query.filter_by(api_key=header).first()
+            if user:
+                project = Project.query.filter_by(id=json_data['id']).first()
+
+                db.session.delete(project)
+                db.session.commit()
+
+                result = Project.serialize(project)
+                return {"status": 'success', 'data': result}, 201
+            else:
+                return {"Messege": "No user with that api key"}, 400

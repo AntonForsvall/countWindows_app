@@ -39,4 +39,15 @@ class GetProjectBloc {
   }
 }
 
+class DeleteProjectBloc {
+  final _repository = Repository();
+
+
+  deleteProject(String apiKey, int projectId) async {
+    await _repository.deleteProject(apiKey, projectId);
+  }
+
+}
+
 final projectBloc = ProjectBloc();
+final deleteProjectBloc = DeleteProjectBloc();

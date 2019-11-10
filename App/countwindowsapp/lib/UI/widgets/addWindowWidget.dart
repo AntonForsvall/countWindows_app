@@ -18,8 +18,6 @@ class AddWindowsWidget extends StatefulWidget {
 
 class _AddWindowsWidgetState extends State <AddWindowsWidget> {
 
-
-  GetCounterBloc getCounterBloc;
   @override
   Widget build(BuildContext context) {
     return Card(

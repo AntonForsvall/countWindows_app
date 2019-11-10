@@ -17,6 +17,9 @@ class Repository {
   Future<Project> saveProject(String projectName, String date, String apiKey) =>
       apiProvider.saveProject(projectName, date, apiKey);
 
+  Future<Project> deleteProject(String apiKey, int projectId) =>
+      apiProvider.deleteProject(apiKey, projectId);
+
   Future<Counter> saveCounter(
           String image, int value, String date, String apiKey, int projectId) =>
       apiProvider.saveCounter(image, value, date, apiKey, projectId);
