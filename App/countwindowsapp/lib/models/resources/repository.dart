@@ -24,6 +24,10 @@ class Repository {
           String image, int value, String date, String apiKey, int projectId) =>
       apiProvider.saveCounter(image, value, date, apiKey, projectId);
 
+  Future<Counter> updateCounter(
+        int counterId,  int value, String apiKey) =>
+      apiProvider.updateCounter(counterId, value, apiKey);
+
   Future getUserProjects(String apiKey) async
   => await apiProvider.getUserProjects(apiKey);
 

@@ -25,8 +25,8 @@ class _AddWindowsWidgetState extends State <AddWindowsWidget> {
         tag: widget.index,
         child: Material(
           child: InkWell(
-            onTap: () {
-              counterBloc.saveCounter(widget.windowImage, 0, 'test', widget.apiKey, widget.projectId);
+            onTap: () async {
+             await counterBloc.saveCounter(widget.windowImage, 0, 'test', widget.apiKey, widget.projectId);
               Navigator.pop(context);
             },
             child: Padding(

@@ -93,6 +93,24 @@ class ApiProvider {
     }
   }
 
+  Future<Counter> updateCounter(int counterID, int value, String apiKey) async {
+    final response = await client.post('http://127.0.0.1:5000/api/update_counter',
+        headers: {"Authorization": apiKey},
+        body: jsonEncode({
+          "id": counterID,
+          "value": value,
+        }));
+
+    print(counterID + value);
+    final Map result = json.decode(response.body);
+    if (response.statusCode == 201) {
+      return Counter.fromJson(result['data']);
+    } else {
+      //if that call was not successful, throw an error
+      throw Exception('failed to load post');
+    }
+  }
+
   Future<List<Project>> getUserProjects(String apiKey) async {
     final response = await client.get('http://127.0.0.1:5000/api/project',
         headers: {'Authorization': apiKey});
