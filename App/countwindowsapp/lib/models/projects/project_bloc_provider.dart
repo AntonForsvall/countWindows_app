@@ -20,15 +20,15 @@ class ProjectBloc {
 
 class GetProjectBloc {
   final _repository = Repository();
-  final _projectSubject = BehaviorSubject<List<Project>>();
-  String apiKey;
+  final _projectSubject =  BehaviorSubject<List<Project>>();
 
   var _projects = <Project>[];
 
-  GetProjectBloc(String api_key) {
-    this.apiKey = api_key;
-    _updateProjects(api_key).then((_) {
+  GetProjectBloc(String apiKey) {
+    _updateProjects(apiKey).then((_) {
       _projectSubject.add(_projects);
+      print(_projects.length);
+      print('Hello');
     });
   }
   
@@ -36,6 +36,10 @@ class GetProjectBloc {
 
     Future<Null> _updateProjects(String apiKey) async {
     _projects = await _repository.getUserProjects(apiKey);
+  }
+
+  void dispose() {
+    _projectSubject.close();
   }
 }
 

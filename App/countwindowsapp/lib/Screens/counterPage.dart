@@ -116,11 +116,17 @@ class _CounterPageState extends State<CounterPage> {
   Widget _noDataWidget(BuildContext context) {
     return Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('No Counter is yet created!', style: TextStyle(color: Colors.white, fontSize: 20),),
+        Text(
+          'No Counter is yet created!',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
         SizedBox(height: 10),
-        Text('Hit the green button to create your Counters...', style: TextStyle(color: Colors.white, fontSize: 15),),
+        Text(
+          'Hit the green button to create your Counters...',
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
       ],
     ));
   }

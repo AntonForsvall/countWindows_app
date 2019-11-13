@@ -1,4 +1,5 @@
 // import the Flutter sdk
+import 'package:countwindowsapp/Screens/counterPage.dart';
 import 'package:countwindowsapp/models/projects/project_bloc_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:countwindowsapp/UI/widgets/projectWidget.dart';
@@ -19,14 +20,20 @@ class _ProjectPageState extends State<ProjectPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController projectNameController = new TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
+  void refrech() {
     getProjectBloc = GetProjectBloc(widget.apiKey);
   }
 
   @override
+  void initState() {
+    print ('InitState');
+    getProjectBloc = GetProjectBloc(widget.apiKey);
+    super.initState();
+  }
+
+  @override
   void dispose() {
+    print('dispose');
     super.dispose();
   }
 
@@ -79,10 +86,12 @@ class _ProjectPageState extends State<ProjectPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: RaisedButton(child: Text('Save', style: TextStyle(color: Colors.white),), color: Color(0xF50B1F3D),
-                          onPressed: (){
-                            if(_formKey.currentState.validate()){
-                              projectBloc.saveProject(projectNameController.text, 'test', widget.apiKey);
+                          onPressed: () async {
+                            if(_formKey.currentState.validate()) {
+                             await projectBloc.saveProject(projectNameController.text, 'test', widget.apiKey);
+                              refrech();
                               Navigator.of(context).pop();
+                             // Navigator.push(context, MaterialPageRoute(builder: (context) => CounterPage(projectId: widget.projectId, apiKey: widget.apiKey, projectName: projectNameController.text,)));
                             }
                           }
                           ),

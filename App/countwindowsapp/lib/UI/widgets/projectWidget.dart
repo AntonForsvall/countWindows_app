@@ -14,7 +14,7 @@ class ProjectWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
+    return new Dismissible(
         direction: DismissDirection.endToStart,
         key: Key(projectId.toString()),
         onDismissed: (direction) =>

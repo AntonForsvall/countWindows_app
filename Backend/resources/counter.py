@@ -48,3 +48,24 @@ class Counters(Resource):
             return {"status": 'success', 'data': result}, 201
 
 
+class Update_Counter(Resource):
+
+    def post(self):
+        header = request.headers['Authorization']
+        json_data = request.get_json(force=True)
+
+        if not header:
+            return {'Message': 'No Api Key'}, 400
+
+        else:
+            user = User.query.filter_by(api_key=header).first()
+            if user:
+                counter = Counter.query.filter_by(id=json_data['id']).first()
+                counter.value = json_data['value']
+
+                db.session.commit()
+
+                result = Counter.serialize(counter)
+                return {"status": 'success', 'data': result}, 201
+            else:
+                return {"Messege": "No user with that api key"}, 400

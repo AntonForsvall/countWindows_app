@@ -109,7 +109,6 @@ class ApiProvider {
       for (Project project in projects) {
         print(project.id);
       }
-      print(projects.toString());
       return projects;
     } else {
       // if that call was not successful, throw an error

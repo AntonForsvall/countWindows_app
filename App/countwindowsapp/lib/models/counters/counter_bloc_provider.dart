@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:countwindowsapp/models/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:countwindowsapp/models/counters/counter.dart';
@@ -21,14 +23,10 @@ class CounterBloc {
 class GetCounterBloc {
   final _repository = Repository();
   final _counterSubject = BehaviorSubject<List<Counter>>();
-  String apiKey;
-  int projectId;
 
   var _projects = <Counter>[];
 
   GetCounterBloc(String apiKey, int projectId) {
-    this.apiKey = apiKey;
-    this.projectId = projectId;
     _updateCounters(apiKey, projectId).then((_) {
       _counterSubject.add(_projects);
     });
